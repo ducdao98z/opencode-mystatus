@@ -15,6 +15,7 @@ An [OpenCode](https://opencode.ai) plugin to query account quota usage for multi
 | ------------ | ----------------- | ---------------------------------------------- |
 | OpenAI       | Plus / Team / Pro | `~/.local/share/opencode/auth.json`            |
 | Zhipu AI     | Coding Plan       | `~/.local/share/opencode/auth.json`            |
+| Z.ai         | Coding Plan       | `~/.local/share/opencode/auth.json`            |
 | Google Cloud | Antigravity       | `~/.config/opencode/antigravity-accounts.json` |
 
 ## Installation
@@ -118,6 +119,15 @@ Account:        9c89****AQVM (Coding Plan)
 Used: 0.5M / 10.0M
 Resets in: 4h
 
+## Z.ai Account Quota
+
+Account:        9c89****AQVM (Z.ai)
+
+5-hour token limit
+██████████████████████████████ 95% remaining
+Used: 0.5M / 10.0M
+Resets in: 4h
+
 ## Google Cloud Account Quota
 
 ### user@gmail.com
@@ -141,7 +151,7 @@ Claude     2d 9h      ░░░░░░░░░░░░░░░░░░░�
 
 No additional configuration required. The plugin automatically reads credentials from:
 
-- **OpenAI & Zhipu AI**: `~/.local/share/opencode/auth.json`
+- **OpenAI, Zhipu AI & Z.ai**: `~/.local/share/opencode/auth.json`
 - **Google Cloud**: `~/.config/opencode/antigravity-accounts.json`
 
 ### Google Cloud Setup
@@ -153,16 +163,20 @@ To query Google Cloud (Antigravity) account quota, you need to install the [open
 This plugin is safe to use:
 
 **Local Files Accessed (read-only):**
+
 - `~/.local/share/opencode/auth.json` - OpenCode's official auth storage
 - `~/.config/opencode/antigravity-accounts.json` - Antigravity plugin's account storage
 
 **API Endpoints (all official):**
+
 - `https://chatgpt.com/backend-api/wham/usage` - OpenAI official quota API
 - `https://bigmodel.cn/api/monitor/usage/quota/limit` - Zhipu AI official quota API
+- `https://api.z.ai/api/monitor/usage/quota/limit` - Z.ai official quota API
 - `https://oauth2.googleapis.com/token` - Google official OAuth API
 - `https://cloudcode-pa.googleapis.com/v1internal:fetchAvailableModels` - Google Cloud official API
 
 **Privacy:**
+
 - No data is stored, uploaded, or cached by this plugin
 - Sensitive information (API keys) is automatically masked in output
 - Source code is fully open for review
@@ -181,15 +195,25 @@ The plugin displays quota for these models:
 ## Development
 
 ```bash
-# Using npm
 npm install
-npm run typecheck
 npm run build
+```
 
-# Or using Bun
-bun install
-bun run typecheck
-bun run build
+### Install from Local
+
+```bash
+# 1. Build and link
+cd /path/to/opencode-mystatus
+npm run build && npm link
+
+# 2. Link in OpenCode directories
+cd ~/.local/share/opencode && npm link opencode-mystatus
+cd ~/.config/opencode && npm link opencode-mystatus
+
+# 3. Update ~/.config/opencode/opencode.json: remove version suffix
+#    "opencode-mystatus@1.0.1" → "opencode-mystatus"
+
+# 4. Restart OpenCode
 ```
 
 ## License

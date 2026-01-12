@@ -15,6 +15,7 @@
 | ------------ | ----------------- | ---------------------------------------------- |
 | OpenAI       | Plus / Team / Pro | `~/.local/share/opencode/auth.json`            |
 | 智谱 AI      | Coding Plan       | `~/.local/share/opencode/auth.json`            |
+| Z.ai         | Coding Plan       | `~/.local/share/opencode/auth.json`            |
 | Google Cloud | Antigravity       | `~/.config/opencode/antigravity-accounts.json` |
 
 ## 安装
@@ -118,6 +119,15 @@ Account:        9c89****AQVM (Coding Plan)
 已用: 0.5M / 10.0M
 重置: 4小时后
 
+## Z.ai 账号额度
+
+Account:        9c89****AQVM (Z.ai)
+
+5 小时 Token 限额
+██████████████████████████████ 剩余 95%
+已用: 0.5M / 10.0M
+重置: 4小时后
+
 ## Google Cloud 账号额度
 
 ### user@gmail.com
@@ -141,7 +151,7 @@ Claude     2d 9h      ░░░░░░░░░░░░░░░░░░░�
 
 无需额外配置。插件自动从以下位置读取认证信息：
 
-- **OpenAI 和智谱 AI**: `~/.local/share/opencode/auth.json`
+- **OpenAI、智谱 AI 和 Z.ai**: `~/.local/share/opencode/auth.json`
 - **Google Cloud**: `~/.config/opencode/antigravity-accounts.json`
 
 ### Google Cloud 设置
@@ -153,16 +163,20 @@ Claude     2d 9h      ░░░░░░░░░░░░░░░░░░░�
 本插件可以安全放心使用：
 
 **读取的本地文件（只读）：**
+
 - `~/.local/share/opencode/auth.json` - OpenCode 官方认证存储
 - `~/.config/opencode/antigravity-accounts.json` - Antigravity 插件的账号存储
 
 **请求的 API 接口（均为官方接口）：**
+
 - `https://chatgpt.com/backend-api/wham/usage` - OpenAI 官方额度查询接口
 - `https://bigmodel.cn/api/monitor/usage/quota/limit` - 智谱 AI 官方额度查询接口
+- `https://api.z.ai/api/monitor/usage/quota/limit` - Z.ai 官方额度查询接口
 - `https://oauth2.googleapis.com/token` - Google 官方 OAuth 接口
 - `https://cloudcode-pa.googleapis.com/v1internal:fetchAvailableModels` - Google Cloud 官方接口
 
 **隐私保护：**
+
 - 插件不会保存、上传或缓存任何用户数据
 - 敏感信息（API Key）在输出时自动脱敏显示
 - 源代码完全开源，可随时审查
@@ -181,15 +195,25 @@ Claude     2d 9h      ░░░░░░░░░░░░░░░░░░░�
 ## 开发
 
 ```bash
-# 使用 npm
 npm install
-npm run typecheck
 npm run build
+```
 
-# 或使用 Bun
-bun install
-bun run typecheck
-bun run build
+### 从本地安装
+
+```bash
+# 1. 构建并链接
+cd /path/to/opencode-mystatus
+npm run build && npm link
+
+# 2. 在 OpenCode 目录中链接
+cd ~/.local/share/opencode && npm link opencode-mystatus
+cd ~/.config/opencode && npm link opencode-mystatus
+
+# 3. 修改 ~/.config/opencode/opencode.json：移除版本号
+#    "opencode-mystatus@1.0.1" → "opencode-mystatus"
+
+# 4. 重启 OpenCode
 ```
 
 ## 许可证

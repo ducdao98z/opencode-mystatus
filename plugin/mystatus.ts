@@ -4,7 +4,7 @@
  * [输入]: ~/.local/share/opencode/auth.json 和 ~/.config/opencode/antigravity-accounts.json 中的认证信息
  * [输出]: 带进度条的额度使用情况展示
  * [定位]: 通过 mystatus 工具查询各账号额度
- * [同步]: lib/openai.ts, lib/zhipu.ts, lib/google.ts, lib/types.ts, lib/i18n.ts
+ * [同步]: lib/openai.ts, lib/zhipu.ts, lib/minimax.ts, lib/google.ts, lib/types.ts, lib/i18n.ts
  */
 
 import { type Plugin, tool } from "@opencode-ai/plugin";
@@ -16,6 +16,7 @@ import { t } from "./lib/i18n";
 import { type AuthData, type QueryResult } from "./lib/types";
 import { queryOpenAIUsage } from "./lib/openai";
 import { queryZaiUsage, queryZhipuUsage } from "./lib/zhipu";
+import { queryMiniMaxUsage } from "./lib/minimax";
 import { queryGoogleUsage } from "./lib/google";
 import { queryCopilotUsage } from "./lib/copilot";
 
@@ -28,7 +29,7 @@ export const MyStatusPlugin: Plugin = async () => {
     tool: {
       mystatus: tool({
         description:
-          "Query account quota usage for all configured AI platforms. Returns remaining quota percentages, usage stats, and reset countdowns with visual progress bars. Currently supports OpenAI (ChatGPT/Codex), Zhipu AI, Z.ai, Google Antigravity, and GitHub Copilot.",
+          "Query account quota usage for all configured AI platforms. Returns remaining quota percentages, usage stats, and reset countdowns with visual progress bars. Currently supports OpenAI (ChatGPT/Codex), Zhipu AI, Z.ai, MiniMax, Google Antigravity, and GitHub Copilot.",
         args: {},
         async execute() {
           // 1. 读取 auth.json
@@ -46,14 +47,25 @@ export const MyStatusPlugin: Plugin = async () => {
           }
 
           // 2. 并行查询所有平台（Google 不依赖 authData）
-          const [openaiResult, zhipuResult, zaiResult, googleResult, copilotResult] =
-            await Promise.all([
-              queryOpenAIUsage(authData.openai),
-              queryZhipuUsage(authData["zhipuai-coding-plan"]),
-              queryZaiUsage(authData["zai-coding-plan"]),
-              queryGoogleUsage(),
-              queryCopilotUsage(authData["github-copilot"]),
-            ]);
+          // MiniMax: prefer "minimax-coding-plan" key, fall back to "minimax"
+          const minimaxAuth =
+            authData["minimax-coding-plan"] ?? authData.minimax;
+
+          const [
+            openaiResult,
+            zhipuResult,
+            zaiResult,
+            minimaxResult,
+            googleResult,
+            copilotResult,
+          ] = await Promise.all([
+            queryOpenAIUsage(authData.openai),
+            queryZhipuUsage(authData["zhipuai-coding-plan"]),
+            queryZaiUsage(authData["zai-coding-plan"]),
+            queryMiniMaxUsage(minimaxAuth),
+            queryGoogleUsage(),
+            queryCopilotUsage(authData["github-copilot"]),
+          ]);
 
           // 3. 收集结果
           const results: string[] = [];
@@ -67,6 +79,9 @@ export const MyStatusPlugin: Plugin = async () => {
 
           // 处理 Z.ai 结果
           collectResult(zaiResult, t.zaiTitle, results, errors);
+
+          // 处理 MiniMax 结果
+          collectResult(minimaxResult, t.minimaxTitle, results, errors);
 
           // 处理 Google 结果
           collectResult(googleResult, t.googleTitle, results, errors);

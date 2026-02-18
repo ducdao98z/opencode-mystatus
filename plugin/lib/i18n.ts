@@ -4,7 +4,7 @@
  * [输入]: 系统语言环境
  * [输出]: 翻译函数和当前语言
  * [定位]: 被所有平台模块共享使用
- * [同步]: openai.ts, zhipu.ts, mystatus.ts, utils.ts
+ * [同步]: openai.ts, zhipu.ts, minimax.ts, mystatus.ts, utils.ts
  */
 
 // ============================================================================
@@ -71,7 +71,7 @@ const translations = {
     tokenExpired:
       "⚠️ OAuth 授权已过期，请在 OpenCode 中使用一次 OpenAI 模型以刷新授权。",
     noAccounts:
-      "未找到任何已配置的账号。\n\n支持的账号类型:\n- OpenAI (Plus/Team/Pro 订阅用户)\n- 智谱 AI (Coding Plan)\n- Z.ai (Coding Plan)\n- Google Cloud (Antigravity)",
+      "未找到任何已配置的账号。\n\n支持的账号类型:\n- OpenAI (Plus/Team/Pro 订阅用户)\n- 智谱 AI (Coding Plan)\n- Z.ai (Coding Plan)\n- MiniMax (Coding Plan)\n- Google Cloud (Antigravity)",
     queryFailed: "❌ 查询失败的账号:\n",
 
     // 平台标题
@@ -89,6 +89,21 @@ const translations = {
     zhipuAccountName: "Coding Plan",
     zaiAccountName: "Z.ai",
     noQuotaData: "暂无配额数据",
+
+    // MiniMax 相关
+    minimaxTitle: "## MiniMax 账号额度",
+    minimaxApiError: (status: number, text: string) =>
+      `MiniMax API 请求失败 (${status}): ${text}`,
+    minimaxPromptLimit: "5 小时 Prompt 限额",
+    minimaxConfigRequired:
+      "⚠️ MiniMax 需要配置 session cookie。\n" +
+      "请创建 ~/.config/opencode/minimax-session.json:\n" +
+      '  {"session": "HERTZ-SESSION值"}\n\n' +
+      "获取方法：\n" +
+      "1. 登录 https://platform.minimaxi.io\n" +
+      "2. 打开 DevTools (F12) → Network\n" +
+      "3. 访问 /coding_plan/remains\n" +
+      "4. 复制 Request Headers 中的 Cookie 值",
 
     // Google 相关
     googleTitle: "## Google Cloud 账号额度",
@@ -149,7 +164,7 @@ const translations = {
     tokenExpired:
       "⚠️ OAuth token expired. Please use an OpenAI model in OpenCode to refresh authorization.",
     noAccounts:
-      "No configured accounts found.\n\nSupported account types:\n- OpenAI (Plus/Team/Pro subscribers)\n- Zhipu AI (Coding Plan)\n- Z.ai (Coding Plan)\n- Google Cloud (Antigravity)",
+      "No configured accounts found.\n\nSupported account types:\n- OpenAI (Plus/Team/Pro subscribers)\n- Zhipu AI (Coding Plan)\n- Z.ai (Coding Plan)\n- MiniMax (Coding Plan)\n- Google Cloud (Antigravity)",
     queryFailed: "❌ Failed to query accounts:\n",
 
     // 平台标题
@@ -167,6 +182,21 @@ const translations = {
     zhipuAccountName: "Coding Plan",
     zaiAccountName: "Z.ai",
     noQuotaData: "No quota data available",
+
+    // MiniMax 相关
+    minimaxTitle: "## MiniMax Account Quota",
+    minimaxApiError: (status: number, text: string) =>
+      `MiniMax API request failed (${status}): ${text}`,
+    minimaxPromptLimit: "5-hour prompt limit",
+    minimaxConfigRequired:
+      "⚠️ MiniMax requires session cookie configuration.\n" +
+      "Create ~/.config/opencode/minimax-session.json:\n" +
+      '  {"session": "HERTZ-SESSION_VALUE"}\n\n' +
+      "How to get:\n" +
+      "1. Login to https://platform.minimaxi.io\n" +
+      "2. Open DevTools (F12) → Network\n" +
+      "3. Visit /coding_plan/remains\n" +
+      "4. Copy Cookie from Request Headers",
 
     // Google 相关
     googleTitle: "## Google Cloud Account Quota",

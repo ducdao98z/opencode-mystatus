@@ -2,7 +2,7 @@
  * 共享类型定义
  *
  * [定位]: 被所有平台模块共享使用的类型
- * [同步]: openai.ts, zhipu.ts, google.ts, mystatus.ts
+ * [同步]: openai.ts, zhipu.ts, google.ts, minimax.ts, mystatus.ts
  */
 
 // ============================================================================
@@ -36,6 +36,15 @@ export interface OpenAIAuthData {
  * 智谱 AI API 认证数据
  */
 export interface ZhipuAuthData {
+  type: string;
+  key?: string;
+}
+
+/**
+ * MiniMax Coding Plan API 认证数据
+ * Auth keys in auth.json: "minimax-coding-plan" and/or "minimax"
+ */
+export interface MiniMaxAuthData {
   type: string;
   key?: string;
 }
@@ -101,6 +110,8 @@ export interface AuthData {
   "zhipuai-coding-plan"?: ZhipuAuthData;
   "zai-coding-plan"?: ZhipuAuthData;
   "github-copilot"?: CopilotAuthData;
+  "minimax-coding-plan"?: MiniMaxAuthData;
+  minimax?: MiniMaxAuthData;
 }
 
 // ============================================================================

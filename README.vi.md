@@ -40,13 +40,13 @@ Install the opencode-mystatus plugin by following: https://raw.githubusercontent
 
 ```json
 {
-    "plugin": ["opencode-mystatus"],
-    "command": {
-        "mystatus": {
-            "description": "Truy vấn hạn mức sử dụng cho tất cả tài khoản AI",
-            "template": "Use the mystatus tool to query quota usage. Return the result as-is without modification."
-        }
+  "plugin": ["opencode-mystatus"],
+  "command": {
+    "mystatus": {
+      "description": "Truy vấn hạn mức sử dụng cho tất cả tài khoản AI",
+      "template": "Use the mystatus tool to query quota usage. Return the result as-is without modification."
     }
+  }
 }
 ```
 
@@ -60,13 +60,13 @@ Install the opencode-mystatus plugin by following: https://raw.githubusercontent
 
 ```json
 {
-    "plugin": ["opencode-mystatus"],
-    "command": {
-        "mystatus": {
-            "description": "Truy vấn hạn mức sử dụng cho tất cả tài khoản AI",
-            "template": "Use the mystatus tool to query quota usage. Return the result as-is without modification."
-        }
+  "plugin": ["opencode-mystatus"],
+  "command": {
+    "mystatus": {
+      "description": "Truy vấn hạn mức sử dụng cho tất cả tài khoản AI",
+      "template": "Use the mystatus tool to query quota usage. Return the result as-is without modification."
     }
+  }
 }
 ```
 
@@ -103,44 +103,18 @@ OpenCode sẽ tự động sử dụng công cụ mystatus để trả lời câ
 ## Ví dụ kết xuất
 
 ```
-## Hạn mức tài khoản OpenAI
+## Trạng thái hạn mức nhà cung cấp AI
 
-Tài khoản:        user@example.com (team)
-
-Giới hạn 3 giờ
-███████████████████████████████ Còn lại 85%
-Reset sau: 2h 30m
-
-## Hạn mức tài khoản MiniMax
-
-Tài khoản:        MiniMax (abc1****xyz9)
-
-Giới hạn prompt 5 giờ
-███████████████████████████████ Còn lại 80%
-Đã dùng: 1,000 / 5,000 prompts
-Reset sau: 4h 51m (lúc 11:20:10 19/02/2026)
-
-## Hạn mức tài khoản Anthropic
-
-Tài khoản:        Claude.ai (abc1****xyz9)
-
-Cửa sổ 5 giờ (Session)
-███████████████████████████████ Còn lại 75%
-Đã dùng: 75%
-Reset sau: 3h 20m (lúc 15:30:45 19/02/2026)
-
-Cửa sổ 7 ngày (Weekly)
-███████████████████████████████ Còn lại 60%
-Đã dùng: 40%
-
-## Hạn mức tài khoản GitHub Copilot
-
-Tài khoản:        GitHub Copilot (individual)
-
-Premium        ████░░░░░░░░░░░░░░░░ 24% (229/300)
-
-Hạn mức reset: 19d 0h (2026-02-01)
+| Nhà cung cấp | Tài khoản          | Gói                    | Đã dùng | Còn lại | Thời gian reset | Ngày reset      |
+|--------------|-------------------|------------------------|----------|----------|-----------------|-----------------|
+| OpenAI       | user@example.com  | Team                   | 15%      | 85%      | 2h 30m          | 19/02/2026 11:20 |
+| MiniMax      | abc1****xyz9      | Coding Plan - Pro     | 20%      | 80%      | 4h 51m          | 19/02/2026 11:20 |
+| Anthropic   | abc1****xyz9      | Claude Pro (5h)       | 25%      | 75%      | 3h 20m          | 19/02/2026 15:30 |
+| Anthropic   | abc1****xyz9      | Claude Pro (7d)       | 40%      | 60%      | 6d 2h           | 25/02/2026 09:00 |
+| GitHub Copilot| @individual     | pro                    | 24%      | 76%      | 19d 0h          | 01/03/2026 00:00 |
 ```
+
+> **Lưu ý:** Với MiniMax, cột Đã dùng hiển thị token còn lại (giảm dần theo thời gian), và Còn lại hiển thị token đã sử dụng.
 
 ## Tính năng
 
